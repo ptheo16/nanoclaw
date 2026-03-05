@@ -39,7 +39,17 @@ Run commands directly—don't tell the user to run them.
 ```bash
 npm run dev          # Run with hot reload
 npm run build        # Compile TypeScript
+npm run typecheck    # Type-check without emitting
+npm run format:check # Check formatting
+npm run format       # Fix formatting
 ./container/build.sh # Rebuild agent container
+```
+
+Testing:
+```bash
+npm test                           # Run all tests
+npm run test:watch                 # Run tests in watch mode
+npx vitest run src/router.test.ts  # Run a single test file
 ```
 
 Service management:
@@ -54,6 +64,10 @@ systemctl --user start nanoclaw
 systemctl --user stop nanoclaw
 systemctl --user restart nanoclaw
 ```
+
+## Adding a Channel
+
+New channels implement the `Channel` interface from `src/types.ts`, then call `registerChannel(name, factory)` from `src/channels/registry.ts`. The factory receives `ChannelOpts` (callbacks for inbound messages/metadata) and returns `null` when credentials are absent. Finally, add an import to `src/channels/index.ts` so it self-registers at startup. Channel skills (e.g., `/add-whatsapp`) do all of this automatically.
 
 ## Troubleshooting
 
